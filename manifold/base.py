@@ -1,7 +1,3 @@
-"""
- Base manifold.
-cited from https://github.com/HazyResearch/hgcn
-"""
 
 from torch.nn import Parameter
 
