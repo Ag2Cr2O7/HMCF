@@ -1,11 +1,11 @@
 import argparse
 
 def parse_args(dataset):
-    print('HMCF参数')
+    print('HMCF')
     if dataset=='amazon':
         parser = argparse.ArgumentParser(description="Run New MDGCL.")
         parser.add_argument('--data_path', nargs='?', default='data/', help='Input data path.')
-        parser.add_argument('--seed', type=int, default=2022, help='random seed')
+        parser.add_argument('--seed', type=int, default=2023, help='random seed')
         parser.add_argument('--dataset', nargs='?', default=dataset, help='{gowalla, amazon, tmall}')
         parser.add_argument('--verbose', type=int, default=1, help='Interval of evaluation.')
         parser.add_argument('--save_model', type=bool, default=False, help='Whether to save')
@@ -29,7 +29,7 @@ def parse_args(dataset):
     elif dataset == 'tmall':
         parser = argparse.ArgumentParser(description="Run New MDGCL.")
         parser.add_argument('--data_path', nargs='?', default='data/', help='Input data path.')
-        parser.add_argument('--seed', type=int, default=2022, help='random seed')
+        parser.add_argument('--seed', type=int, default=2023, help='random seed')
         parser.add_argument('--dataset', nargs='?', default=dataset, help='{gowalla, amazon, tmall}')
         parser.add_argument('--verbose', type=int, default=1, help='Interval of evaluation.')
         parser.add_argument('--save_model', type=bool, default=False, help='Whether to save')
@@ -57,7 +57,7 @@ def parse_args(dataset):
     else:
         parser = argparse.ArgumentParser(description="Run New MDGCL.")
         parser.add_argument('--data_path', nargs='?', default='data/', help='Input data path.')
-        parser.add_argument('--seed', type=int, default=2022, help='random seed')
+        parser.add_argument('--seed', type=int, default=2023, help='random seed')
         parser.add_argument('--dataset', nargs='?', default=dataset, help='{gowalla, amazon, tmall}')
         parser.add_argument('--verbose', type=int, default=1, help='Interval of evaluation.')
         parser.add_argument('--save_model', type=bool, default=False, help='Whether to save')
