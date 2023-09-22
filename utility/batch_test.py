@@ -2,16 +2,14 @@ import torch
 import numpy as np
 from tqdm import trange
 
-#r=[array([1., 0., 1., 1.])]表示预测数组的第二个元素是没有预测成功的
 def getLabel(test_data, pred_data):
     r = []
     for i in range(len(test_data)):
         groundTrue = test_data[i]
         predictTopK = pred_data[i]
-        # 将predictTopK中的每个元素在groundTrue中的存在性映射成True或False的列表
         pred = list(map(lambda x: x in groundTrue, predictTopK))
-        pred = np.array(pred).astype("float") #将映射结果转换成np.array格式，并将其元素的数据类型转换为float
-        r.append(pred) #将转换后的标签数据pred添加到列表r中。
+        pred = np.array(pred).astype("float") 
+        r.append(pred) 
     return np.array(r).astype('float')
 
 
@@ -25,7 +23,6 @@ def Recall_ATk(test_data, r, k):
 def NDCGatK_r(test_data, r, k):
     assert len(r) == len(test_data)
     pred_data = r[:, :k]
-
     test_matrix = np.zeros((len(pred_data), k))
     for i, items in enumerate(test_data):
         length = k if k <= len(items) else len(items)
@@ -43,7 +40,7 @@ def NDCGatK_r(test_data, r, k):
 def test_one_batch(X, topks):
     sorted_items = X[0].numpy()
     groundTrue = X[1]
-    r = getLabel(groundTrue, sorted_items) #预测的0,1矩阵
+    r = getLabel(groundTrue, sorted_items) 
     recall, ndcg = [], []
     for k in topks:
         recall.append(Recall_ATk(groundTrue, r, k))
@@ -78,7 +75,7 @@ def eval_PyTorch(model, data_generator, Ks):
         exclude_items = []
         ground_truth = []
         for i in range(len(user_batch)):
-            if user_batch[i] in data_generator.train_items: #新加
+            if user_batch[i] in data_generator.train_items:
                 train_items = list(data_generator.train_items[user_batch[i]])
             exclude_index.extend([i] * len(train_items))
             exclude_items.extend(train_items)
