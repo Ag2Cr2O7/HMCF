@@ -21,7 +21,6 @@ def parse_args(dataset):
         parser.add_argument('--ssl_reg', type=float, default=1e-1, help='Reg weight for ssl loss')
         parser.add_argument('--lhyper', type=float, default=1e-1, help='lambda2.')
         parser.add_argument('--temp', type=float, default=0.2, help='temperature in ssl loss')
-        parser.add_argument('--htemp', type=float, default=0.5, help='cross CL tao')
         parser.add_argument('--dropout', type=float, default=0.5, help='rou')
         parser.add_argument('--show_step', type=int, default=10, help='Test every show_step epochs.')
         parser.add_argument('--Ks', nargs='?', default='[20, 40]', help='Metrics scale')
@@ -45,12 +44,9 @@ def parse_args(dataset):
         parser.add_argument('--ssl_reg', type=float, default=1e-1, help='Reg weight for ssl loss')
         parser.add_argument('--lhyper', type=float, default=1e-3, help='lambda2.')
         parser.add_argument('--temp', type=float, default=0.2, help='temperature in ssl loss')
-        parser.add_argument('--htemp', type=float, default=0.5, help='cross CL tao')
         parser.add_argument('--dropout', type=float, default=0.5, help='rou')
         parser.add_argument('--show_step', type=int, default=10, help='Test every show_step epochs.')
         parser.add_argument('--Ks', nargs='?', default='[20, 40]', help='Metrics scale')
-
-
 
 
 
@@ -73,7 +69,6 @@ def parse_args(dataset):
         parser.add_argument('--ssl_reg', type=float, default=1e-1, help='Reg weight for ssl loss')
         parser.add_argument('--lhyper', type=float, default=1e-1, help='lambda2')
         parser.add_argument('--temp', type=float, default=0.2, help='temperature in ssl loss')
-        parser.add_argument('--htemp', type=float, default=0.5, help='cross CL tao')
         parser.add_argument('--dropout', type=float, default=0.5, help='rou')
         parser.add_argument('--show_step', type=int, default=10, help='Test every show_step epochs.')
         parser.add_argument('--Ks', nargs='?', default='[20, 40]', help='Metrics scale')
