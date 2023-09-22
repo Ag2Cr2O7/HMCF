@@ -1,6 +1,3 @@
-"""
-This is the implementation of Hyperboloid manifold.
-"""
 import math
 import torch
 import torch.nn as nn
@@ -77,7 +74,6 @@ class Hyperboloid(Manifold):
         raise NotImplementedError
 
     def proj(self, x, c):
-        """Projects point p on the manifold.在歧管上投影点p"""
         K = 1. / c
         d = x.size(-1) - 1
         y =x.narrow(-1, 1, d)
@@ -99,14 +95,12 @@ class Hyperboloid(Manifold):
         return vals + mask * u
 
     def proj_tan0(self, u, c):
-        """Projects u on the tangent space of the origin.在原点的切线空间上投影u"""
-        narrowed = u.narrow(-1, 0, 1) # 张量的第一列的内容
-        vals = torch.zeros_like(u) # val为和u同形状的全0张量
-        vals[..., 0:1] = narrowed #将u的第一列赋给vals
-        return u - vals #返回将u的第一列清0的张量
+        narrowed = u.narrow(-1, 0, 1) 
+        vals = torch.zeros_like(u) 
+        vals[..., 0:1] = narrowed 
+        return u - vals 
 
     def expmap(self, u, x, c):
-        """Exponential map of u at point x.u在x点的指数映射"""
         K = 1. / c
         sqrtK = K ** 0.5
         normu = self.minkowski_norm(u)
@@ -117,7 +111,6 @@ class Hyperboloid(Manifold):
         return self.proj(result, c)
 
     def logmap(self, x, y, c):
-        """Logarithmic map of point y at point x. y点在x点的对数图"""
         K = 1. / c
         xy = torch.clamp(self.minkowski_dot(x, y) + K, max=-self.eps[x.dtype]) - K
         u = y + xy * x * c
@@ -128,7 +121,6 @@ class Hyperboloid(Manifold):
         return self.proj_tan(result, x, c)
 
     def expmap0(self, u, c):
-        """Exponential map of u at the origin. 原始点u的指数映射"""
         K = 1. / c
         sqrtK = K ** 0.5
         d = u.size(-1) - 1
