@@ -34,8 +34,8 @@ class hmcf(nn.Module):
         self.lsvd=args.lhyper
         self.hweight=100
         self.htemp=args.temp
-        self.user_embedding = nn.Embedding(self.n_users, self.emb_dim) 
-        self.item_embedding = nn.Embedding(self.n_items, self.emb_dim) 
+        self.user_embedding = nn.Embedding(self.n_users, self.emb_dim)
+        self.item_embedding = nn.Embedding(self.n_items, self.emb_dim)
         self.suser_embedding=nn.Embedding(self.n_users, self.emb_dim+1)
         self.sitem_embedding=nn.Embedding(self.n_items, self.emb_dim+1)
         self._init_weight()
@@ -52,7 +52,7 @@ class hmcf(nn.Module):
         A_values = torch.ones(size=(len(self.all_h_list), 1)).view(-1).cuda()
         A_tensor = torch_sparse.SparseTensor(row=self.all_h_list, col=self.all_t_list, value=A_values, sparse_sizes=self.A_in_shape).cuda()
         D_values = A_tensor.sum(dim=1).pow(-0.5)
-        self.A_in_shape = self.plain_adj.tocoo().shape 
+        self.A_in_shape = self.plain_adj.tocoo().shape
         G_indices, G_values = torch_sparse.spspmm(self.D_indices, D_values, self.A_indices, A_values, self.A_in_shape[0], self.A_in_shape[1], self.A_in_shape[1])
         G_indices, G_values = torch_sparse.spspmm(G_indices, G_values, self.D_indices, D_values, self.A_in_shape[0], self.A_in_shape[1], self.A_in_shape[1])
         return G_indices, G_values
@@ -113,16 +113,16 @@ class hmcf(nn.Module):
             i1 = F.normalize(self.manifold.expmap0(i1,1), dim=1)
             u2 = F.normalize(hu[i][users], dim=1)
             i2 = F.normalize(hi[i][items], dim=1)
-            pos_score = torch.sum(torch.exp(self.manifold.sqdist(u1,u2,c=1) / t), axis=1)
+            pos_score = torch.sum(torch.exp(-self.manifold.sqdist(u1,u2,c=1) / t), axis=1)
             negu=torch.flip(u2, dims=[0])
-            neg_score = self.hweight*torch.sum(torch.exp(self.manifold.sqdist(u1,negu,c=1) / t), axis=1)
+            neg_score = self.hweight*torch.sum(torch.exp(-self.manifold.sqdist(u1,negu,c=1) / t), axis=1)
             unan=-torch.log(pos_score / (neg_score + 1e-8) + 1e-8)
             unan[torch.isnan(unan)] = 0
             unan[torch.isinf(unan)]=0
             lossu = torch.sum(unan)
-            pos_score = torch.exp(torch.sum(self.manifold.sqdist(i1, i2, c=1), dim=1) / t)
+            pos_score = torch.sum(torch.exp(-self.manifold.sqdist(i1, i2, c=1)/t), axis=1)
             negi = torch.flip(i2, dims=[0])
-            neg_score =self.hweight* torch.sum(torch.exp(self.manifold.sqdist(i1, negi, c=1) / t), axis=1)
+            neg_score =self.hweight* torch.sum(torch.exp(-self.manifold.sqdist(i1, negi, c=1) / t), axis=1)
             inan = -torch.log(pos_score / (neg_score + 1e-8) + 1e-8)
             inan[torch.isnan(inan)] = 0
             inan[torch.isinf(inan)]=0
@@ -132,7 +132,7 @@ class hmcf(nn.Module):
             cl_loss /= pos_score.shape[0]
         return cl_loss
 
-    def emb_loss(self,u_embeddings,pos_embeddings,neg_embeddings):
+    def emb_loss(self,u_embeddings_pre,pos_embeddings_pre,neg_embeddings_pre):
         emb_loss = (u_embeddings_pre.norm(2).pow(2) + pos_embeddings_pre.norm(2).pow(2) + neg_embeddings_pre.norm(2).pow(2))
         emb_loss = self.emb_reg * emb_loss
         return emb_loss
