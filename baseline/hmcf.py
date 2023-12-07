@@ -120,3 +120,20 @@ class hmcf(nn.Module):
         normt=torch.norm(t, dim=1, keepdim=True)
         cnt=math.sqrt(c)*normt
         return torch.tanh(cnt)*(t/cnt)
+
+    def cl1_loss(self, users, positems, zu,zuu,zi,zii,t):
+        users = torch.unique(users)
+        items = torch.unique(positems)
+        cl_loss = 0.0
+        for i in range(self.n_layers):
+            u1 = F.normalize(zu[i][users], dim=1)
+            i1 = F.normalize(zi[i][items], dim=1)
+            u2 = F.normalize(zuu[i][users], dim=1)
+            i2 = F.normalize(zii[i][items], dim=1)
+            cl_loss += self.cal_loss(u1, u2,t)
+            cl_loss += self.cal_loss(i1, i2,t)
+        return cl_loss
+
+    def hs(self,x,y,c=1):
+        dist=self.manifold.sqdist(x,y,c)
+        return 1/dist
