@@ -1,9 +1,5 @@
 # HMCF
-This is the PyTorch implementation of the paper that we submitted for under review to WWW2024.
->HMCF: Hierarchical Multi-View Graph Contrastive Learning for Collaborative Filtering.
-
->Submitted to The Web Conference 2024 (WWW 2024).
-
+This is the PyTorch implementation of the paper that we submitted for under review.
 >Anonymous Author(s)
 
 ## Environment Requirement
