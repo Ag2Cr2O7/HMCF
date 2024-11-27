@@ -1,6 +1,5 @@
 # HMCF
-This is the PyTorch implementation of the paper that we submitted for under review.
->Anonymous Author(s)
+This is the PyTorch implementation of our paper.
 
 ## Environment Requirement
 
