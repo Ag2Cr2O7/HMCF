@@ -10,9 +10,10 @@ The required packages are as follows:
 - tqdm == 4.62.3
 
 ## How to run the codes
-
+```
 python main.py --dataset gowalla 
 ```
+
 
 
 
